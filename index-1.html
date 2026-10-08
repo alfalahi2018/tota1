@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>سفاري الحروف 🦁 أ ب ت ث</title>
+<style>
+*{box-sizing:border-box;-webkit-user-select:none;user-select:none}
+body{margin:0;font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:linear-gradient(#8fd3f4 0,#fff1b8 45%,#e9c46a 100%);min-height:100vh;color:#4a3000;text-align:center;overflow-x:hidden}
+.bg{position:fixed;inset:0;pointer-events:none;font-size:38px;z-index:0}
+.bg span{position:absolute;animation:fl 6s ease-in-out infinite}
+@keyframes fl{50%{transform:translateY(-20px) rotate(7deg)}}
+header{position:sticky;top:0;z-index:5;background:#2d6a4f;color:#fff;padding:8px 14px;display:flex;justify-content:space-between;align-items:center;font-weight:bold;font-size:20px;box-shadow:0 3px 8px #0003}
+header button{background:#ffd166;color:#4a3000;border:0;border-radius:20px;padding:6px 14px;font-size:16px;font-weight:bold;cursor:pointer}
+main{position:relative;z-index:1;max-width:920px;margin:auto;padding:14px}
+h1{font-size:34px;margin:8px 0;color:#7a3e00}
+.fat{font-size:68px;animation:fl 3s infinite}
+.menu{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+.lv{background:#fffaf0;border:4px solid #bc6c25;border-radius:24px;padding:16px;width:250px;cursor:pointer;box-shadow:0 6px 0 #8b4d12;transition:.2s}
+.lv:hover{transform:translateY(-4px)}
+.lv .ic{font-size:50px}.lv h3{margin:6px 0;font-size:22px}.lv p{margin:0;font-size:15px}
+.lv.done{background:#e1ffd2;border-color:#2d6a4f}
+.say{background:#fff;border-radius:20px;padding:10px 16px;display:inline-block;font-size:20px;margin:8px 0;border:3px dashed #bc6c25}
+.row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:12px 0}
+.drop{min-width:100px;min-height:100px;border:4px dashed #bc6c25;border-radius:20px;background:#fff8e1;display:flex;align-items:center;justify-content:center;flex-direction:column;font-size:44px;font-weight:bold;transition:.2s}
+.drop small{font-size:17px;line-height:1.5}
+.drop.ok{background:#c8f7b8;border:4px solid #2d6a4f}
+.drop.hot{background:#ffe29a}
+.board{min-width:190px;min-height:200px;padding:6px}
+.board b{font-size:68px;line-height:1}
+.tray{min-height:100px;border:3px solid #dda15e;border-radius:22px;background:#ffffffa0;padding:10px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center}
+.card{background:linear-gradient(#ffd166,#f4a261);border-radius:18px;padding:8px 16px;font-size:34px;font-weight:bold;cursor:grab;box-shadow:0 5px 0 #b5651d;touch-action:none;min-width:70px}
+.card small{display:block;font-size:19px}
+.card.lift{opacity:.3}
+.ghost{position:fixed;z-index:99;pointer-events:none;transform:rotate(-6deg) scale(1.1);opacity:.95}
+.shake{animation:sh .4s}
+@keyframes sh{25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.pic{font-size:90px;animation:fl 3s infinite}
+.slots{display:flex;gap:10px;justify-content:center;align-items:center;margin:10px 0;font-size:56px;font-weight:bold}
+.btn{background:#2d6a4f;color:#fff;border:0;border-radius:30px;padding:12px 30px;font-size:22px;font-weight:bold;cursor:pointer;box-shadow:0 5px 0 #1b4332;margin:10px}
+.bar{height:18px;background:#fff;border-radius:10px;border:2px solid #bc6c25;overflow:hidden;margin:6px auto;max-width:400px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#2d6a4f,#95d5b2);transition:.4s}
+.modal{position:fixed;inset:0;background:#0006;z-index:50;display:flex;align-items:center;justify-content:center}
+.modal div{background:#fff;border-radius:30px;padding:26px;max-width:380px;border:6px solid #2d6a4f}
+.modal h2{font-size:30px;margin:0 0 8px}
+.conf{position:fixed;top:-40px;font-size:30px;z-index:60;pointer-events:none;animation:fall 2.5s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+footer{position:relative;z-index:1;padding:14px;font-size:15px;opacity:.8}
+</style>
+</head>
+<body>
+<div class="bg"><span style="top:12%;right:5%">🐘</span><span style="top:32%;left:4%">🦒</span><span style="top:62%;right:4%">🌴</span><span style="top:78%;left:7%">🦓</span></div>
+<header><span>⭐ <span id="sc">0</span> نقطة</span><span>سفاري الحروف</span><button onclick="menu()">🏠 المراحل</button></header>
+<main id="st"></main>
+<footer>Created by T. Badria Alfalahi</footer>
+<script>
+const $=s=>document.querySelector(s),st=$('#st');
+let score=0,done={};
+const add=n=>{score+=n;$('#sc').textContent=score};
+const shuf=a=>[...a].sort(()=>Math.random()-.5);
+const A=[['أ','أسد','🦁'],['أ','أرنب','🐰'],['ب','ببغاء','🦜'],['ب','بومة','🦉'],['ت','تمساح','🐊'],['ت','تيس','🐐'],['ث','ثعبان','🐍'],['ث','ثعلب','🦊']];
+function drag(el,cb){
+ el.addEventListener('pointerdown',e=>{
+  e.preventDefault();const r=el.getBoundingClientRect(),dx=e.clientX-r.left,dy=e.clientY-r.top;
+  const g=el.cloneNode(true);g.classList.add('ghost');g.style.width=r.width+'px';document.body.appendChild(g);el.classList.add('lift');
+  const mv=ev=>{g.style.left=ev.clientX-dx+'px';g.style.top=ev.clientY-dy+'px';document.querySelectorAll('.hot').forEach(h=>h.classList.remove('hot'));const t=document.elementFromPoint(ev.clientX,ev.clientY);t&&t.closest('.drop')&&t.closest('.drop').classList.add('hot')};
+  mv(e);
+  const up=ev=>{document.removeEventListener('pointermove',mv);document.removeEventListener('pointerup',up);
+   g.remove();el.classList.remove('lift');document.querySelectorAll('.hot').forEach(h=>h.classList.remove('hot'));
+   const t=document.elementFromPoint(ev.clientX,ev.clientY);cb(el,t&&t.closest('.drop'))};
+  document.addEventListener('pointermove',mv);document.addEventListener('pointerup',up);
+ });
+}
+const bad=el=>{el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake')};
+function confetti(){for(let i=0;i<30;i++){const c=document.createElement('div');c.className='conf';c.textContent=['🦁','🐘','⭐','🦒','🎉'][i%5];c.style.left=Math.random()*100+'vw';c.style.animationDelay=Math.random()*.8+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),3500)}}
+function win(n,msg){
+ done[n]=1;confetti();
+ const all=Object.keys(done).length==3,m=document.createElement('div');m.className='modal';
+ m.innerHTML=`<div><div style="font-size:70px">${all?'🏆':'🦁'}</div><h2>${all?'أنتِ مستكشفة سفاري!':'أحسنتِ!'}</h2><p style="font-size:20px">${all?'أنهيتِ كل المراحل وعرفتِ الحروف أ ب ت ث 🎉':msg}</p><button class="btn">${all?'العودة للقائمة':'اختاري مرحلة أخرى'}</button></div>`;
+ document.body.appendChild(m);m.querySelector('button').onclick=()=>{m.remove();menu()};
+}
+function menu(){
+ const L=[[1,'🦁','المرحلة ١: بيوت الحيوانات','ضعي كل حيوان عند حرفه الأول'],[2,'🔍','المرحلة ٢: الحرف الضائع','أكملي اسم الحيوان بالحرف المناسب'],[3,'🚙','المرحلة ٣: رحلة الجيب','رتّبي الحروف لتكوين اسم الحيوان']];
+ const p=Object.keys(done).length;
+ st.innerHTML=`<div class="fat">🚙🦒</div><h1>سفاري الحروف: أ ب ت ث</h1><div class="say">انطلقي في رحلة السفاري! اختاري أي مرحلة تبدئين بها</div><div class="bar"><i style="width:${p/3*100}%"></i></div><div class="menu">${L.map(l=>`<div class="lv ${done[l[0]]?'done':''}" onclick="go(${l[0]})"><div class="ic">${done[l[0]]?'✅':l[1]}</div><h3>${l[2]}</h3><p>${l[3]}</p></div>`).join('')}</div>`;
+}
+function go(n){[0,L1,L2,L3][n]()}
+/* المرحلة 1 */
+function L1(){
+ let n=0;
+ st.innerHTML=`<h1>🦁 بيوت الحيوانات</h1><div class="say">اسحبي الحيوان إلى الحرف الذي يبدأ به اسمه</div><div class="row">${['أ','ب','ت','ث'].map(l=>`<div class="drop board" data-k="${l}"><b>${l}</b><small></small></div>`).join('')}</div><div class="tray">${shuf(A).map(a=>`<div class="card" data-k="${a[0]}">${a[2]}<small>${a[1]}</small></div>`).join('')}</div>`;
+ document.querySelectorAll('.card').forEach(c=>drag(c,(el,d)=>{
+  if(d&&d.dataset.k===el.dataset.k){d.classList.add('ok');d.querySelector('small').innerHTML+=el.innerHTML.replace('<small>',' ').replace('</small>','')+'<br>';el.remove();add(10);if(++n==A.length)setTimeout(()=>win(1,'وضعتِ كل الحيوانات في بيوتها!'),400)}
+  else bad(el);
+ }));
+}
+/* المرحلة 2 */
+function L2(){
+ const W=shuf(A);let i=0;
+ function show(){
+  const w=W[i];
+  st.innerHTML=`<h1>🔍 الحرف الضائع</h1><div class="bar"><i style="width:${i/W.length*100}%"></i></div><div class="pic">${w[2]}</div><div class="say">اسحبي الحرف الناقص (${i+1}/${W.length})</div><div class="slots"><div class="drop" id="sl" style="min-width:90px;min-height:90px"></div><span>${w[1].slice(1)}</span></div><div class="tray">${['أ','ب','ت','ث'].map(l=>`<div class="card" data-k="${l}">${l}</div>`).join('')}</div><div id="msg" class="say" style="visibility:hidden"></div>`;
+  document.querySelectorAll('.card').forEach(c=>drag(c,(el,d)=>{
+   if(!d||d.id!=='sl'||d.classList.contains('ok'))return;
+   const m=$('#msg');m.style.visibility='visible';
+   if(el.dataset.k===w[0]){d.textContent=w[0];d.classList.add('ok');m.textContent='✅ '+w[1]+' — أحسنتِ!';add(15);
+    const b=document.createElement('button');b.className='btn';b.textContent=i==W.length-1?'إنهاء 🦁':'التالي ⬅';b.onclick=()=>{if(++i<W.length)show();else win(2,'أكملتِ كل أسماء الحيوانات!')};st.appendChild(b)}
+   else{m.textContent='❌ جرّبي حرفاً آخر!';bad(d)}
+  }));
+ }
+ show();
+}
+/* المرحلة 3 */
+function L3(){
+ const W=shuf([['أسد','🦁'],['بط','🦆'],['ثور','🐂'],['تيس','🐐'],['أرنب','🐰'],['ثعلب','🦊']]);let i=0;
+ function show(){
+  const w=W[i],ls=Array.from(w[0]);
+  st.innerHTML=`<h1>🚙 رحلة الجيب</h1><div class="bar"><i style="width:${i/W.length*100}%"></i></div><div class="pic">${w[1]}</div><div class="say">رتّبي الحروف بالترتيب لتكوين الاسم (${i+1}/${W.length})</div><div class="slots">${ls.map(()=>'<div class="drop sl" style="min-width:84px;min-height:84px"></div>').join('')}</div><div class="tray drop" id="tr">${shuf(ls.map((l,k)=>[l,k])).map(x=>`<div class="card" data-i="${x[1]}">${x[0]}</div>`).join('')}</div><div id="msg" class="say" style="visibility:hidden"></div>`;
+  const slots=[...document.querySelectorAll('.sl')];
+  document.querySelectorAll('.card').forEach(c=>drag(c,(el,d)=>{
+   if(!d)return;
+   if(d.id==='tr')d.appendChild(el);else if(d.classList.contains('sl')&&!d.firstChild)d.appendChild(el);else return;
+   if(slots.every(s=>s.firstChild)){
+    const ok=slots.every((s,k)=>+s.firstChild.dataset.i===k),m=$('#msg');m.style.visibility='visible';
+    if(ok){slots.forEach(s=>s.classList.add('ok'));m.textContent='✅ '+w[0]+' — أحسنتِ!';add(15);
+     const b=document.createElement('button');b.className='btn';b.textContent=i==W.length-1?'إنهاء 🚙':'التالي ⬅';b.onclick=()=>{if(++i<W.length)show();else win(3,'ركّبتِ كل الأسماء!')};st.appendChild(b)}
+    else{m.textContent='❌ حاولي مرة أخرى!';slots.forEach(s=>{bad(s);$('#tr').appendChild(s.firstChild)})}
+   }
+  }));
+ }
+ show();
+}
+menu();
+</script>
+</body>
+</html>
